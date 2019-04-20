@@ -33,57 +33,22 @@ if (isset($error))
 echo '<div style="padding:4px; border:1px solid red; color:red;">'.$error.'</div>';
 }
 ?>
+<script>
+  $(function(){
+    $("#navv").load("nav.php")
+  });
+</script>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">AMS</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li ><a href="main.php">Dashboard</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Asset Acquirement
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="add-asset.php">New Asset</a></li>
-          <li><a href="old-asset.php">Addition Current Asset</a></li>
-        </ul>
-      </li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Search
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="id.php">ID</a></li>
-          <li><a href="name.php">Name</a></li>
-          <li><a href="date.php">Date</a></li>
-        </ul>
-      </li>
-      <li><a href="transfer.php">Transfer Asset</a></li>
-      <li class="active"><a href="loan.php">Loan Asset</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Report
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="log.php">Weekly Log</a></li>
-          <li><a href="report.php">Monthly Report</a></li>
-          <li><a href="analyst.php">Yearly Analyst</a></li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
-    </ul>
-  </div>
-</nav>
+<div id="navv"></div>
 <div class="container">
   <h2>Edit Asset Data</h2>
 <form action="" method="post">
 <input type="hidden" name="id" value="<?php echo $id; ?>"/>
 <td>Available: <input type="radio" name="own" value="1" <?php if ($own=='1') {
- echo 'checked'; }?>> Disposed: <input type="radio" name="own" value="2" <?php if ($own=='2') {
- echo 'checked'; }?>> Not Available: <input type="radio" name="own" value="3" <?php if ($own=='3') {
+ echo 'checked'; }?>></br> Not Available: <input type="radio" name="own" value="2" <?php if ($own=='2') {
+ echo 'checked'; }?>></br> Disposed: <input type="radio" name="own" value="3" <?php if ($own=='3') {
  echo 'checked';
 } ?>> </td>
 <div class="row">
@@ -120,19 +85,6 @@ echo '<div style="padding:4px; border:1px solid red; color:red;">'.$error.'</div
   </div>
   </div>
   <label>New item ID</label>
-  <?php 
-  $x = bin2hex(random_bytes(4));
-  echo $x;
-  echo "</br>";
-   echo $x;
-   echo "</br>";
-    echo $x;
-   echo "</br>";
-
-
-  ?>
-  
-  <?php  echo "</br>"; echo $x; ?>
 
 <input type="submit" value=" Edit " class="btn btn-primary" name="submit" style="margin-left: 50%;"/><br />
       </form>
@@ -177,10 +129,9 @@ or die(mysqli_error($conn));
 $conn->close();
 
 echo "<script>
-             alert('Document successfully edited'); 
-             window.location.href = 'id.php';
+             alert('Item Status successfully changed'); 
+             window.close();
      </script>";
-echo "welp";
 }
 }
 else

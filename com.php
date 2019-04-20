@@ -33,50 +33,15 @@ if (isset($error))
 echo '<div style="padding:4px; border:1px solid red; color:red;">'.$error.'</div>';
 }
 ?>
+<script>
+  $(function(){
+    $("#navv").load("nav.php")
+  });
+</script>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">AMS</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li ><a href="main.php">Dashboard</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Asset Acquirement
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="add-asset.php">New Asset</a></li>
-          <li><a href="old-asset.php">Addition Current Asset</a></li>
-        </ul>
-      </li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Search
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="id.php">ID</a></li>
-          <li><a href="name.php">Name</a></li>
-          <li><a href="date.php">Date</a></li>
-        </ul>
-      </li>
-      <li><a href="transfer.php">Transfer Asset</a></li>
-      <li class="active"><a href="loan.php">Loan Asset</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Report
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="log.php">Weekly Log</a></li>
-          <li><a href="report.php">Monthly Report</a></li>
-          <li><a href="analyst.php">Yearly Analyst</a></li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
-    </ul>
-  </div>
-</nav>
+<div id="navv"></div>
 <div class="container">
   <h2>Edit Asset Data</h2>
 <form action="" method="post">
@@ -110,13 +75,9 @@ echo '<div style="padding:4px; border:1px solid red; color:red;">'.$error.'</div
       <input type="hidden" name="desc_in" value="<?php echo $desc_in; ?>">
       <input type="hidden" name="desc_out" value="<?php echo $desc_out; ?>">
       <input type="hidden" name="val" value="<?php echo $val; ?>">
-    </br>
-      <label>New ID.:</label>
-      <input type="text" name="n_id" readonly="readonly" value="<?php echo bin2hex(random_bytes(4)); ?>">
-    <td class="key"><input class="form-control" type="text" name="sub_item" id="s1" required="required" autocomplete="off"/></td>
   </br>
-     <label>Split number.:</label>
-    
+     <label>Combined Item ID.:</label>
+    <td class="key"><input class="form-control" type="text" name="trgt_id" id="s1" required="required" autocomplete="off"/></td>
     
     </table>
   </div></div>
@@ -147,27 +108,48 @@ if (is_string($_POST['id']))
 
 $id = $_POST['id'];
 $old_item = mysqli_real_escape_string($conn, $_POST['no_item']);
-$sub_item = $_POST['sub_item'];
-$new_item = $old_item - $sub_item; 
-$x = mysqli_real_escape_string($conn, $_POST['n_id']);
-$namex = mysqli_real_escape_string($conn, $_POST['name']);
-$ownx = 1;
-$date_inx = date("Y-m-d H:i:s");
-$date_outx = date("0000-00-00 00:00:00");
-$desc_inx = mysqli_real_escape_string($conn, $_POST['desc_in']);
-$desc_outx = mysqli_real_escape_string($conn, $_POST['desc_out']);
-$valx = mysqli_real_escape_string($conn, $_POST['val']);
+$trgt_item = $_POST['trgt_id'];
 
 
- $query = "SELECT * FROM item WHERE item_id=$item_id";
-    $result = mysqli_query($conn,$query) or die(mysqli_error());
-    $rows = mysqli_num_rows($result);
-        if($rows==1){
-      $_POST['item_id'] = $item_id;
-     mysqli_query($conn, "UPDATE item SET no_item='$new_item' WHERE item_id='$id'")
+
+ $query = "SELECT * FROM item WHERE item_id='".$trgt_item."'";
+    $result = mysqli_query($conn,$query) or die(mysqli_error($conn));
+    $rows = mysqli_fetch_array($result);
+
+
+        if($rows){
+      $no_item = $rows['no_item']; // combine inserted ID item units
+      echo $no_item;
+      echo $old_item;
+      $new_item = $old_item + $no_item;
+      $query2 = "UPDATE item SET no_item='".$new_item."' WHERE item_id='".$id."'";
+     mysqli_query($conn, $query2)
 or die(mysqli_error($conn));
-            }else{
+
+            if ($conn->query($query2) === TRUE) {
+              $cond = 6 ;
+              $nx = "nx";
+              $date = date("Y-m-d H:i:s");
+              $query3 = "INSERT item_log (cond, item_id, item_id2, item_id3, val, val2, val3, dat_in) 
+                VALUES ('$cond', '$id', '$trgt_item','$nx','$old_item','$no_item','$new_item','$date')";
+              mysqli_query($conn, $query3)
+              or die(mysqli_error($conn));
+            }
+            else{
+
+              echo "kebamboom!";
+            }
+
+
+
+
+
+            }
+
+
+            else{
         echo "<h3>Item ID is incorrect, Please try again</h3>";
+        exit();
         }
 
 
@@ -175,28 +157,28 @@ or die(mysqli_error($conn));
  //$sql = "INSERT INTO item (item_id, name, own, date_in, date_out, desc_in, desc_out, no_item, val) 
                // VALUES ('$x', '$namex', '$ownx','$date_inx','$date_outx','$desc_inx','$desc_outx','$sub_item','$valx')";
                 
-           if ($conn->query($sql) === TRUE) {
-echo "<script type= 'text/javascript'>alert('New record created successfully');</script>";
-} else {
-echo "<script type= 'text/javascript'>alert('Error: " . $sql . "<br>" . $conn->error."');</script>";
-}
+         //if ($conn->query($query) === TRUE) {
+//echo "<script type= 'text/javascript'>alert('New record created successfully');</script>";
+//} else {
+//echo "<script type= 'text/javascript'>alert('Error: " . $query . "<br>" . $conn->error."');</script>";
+//}
 
 
-
-if ($new_item == '')
+if ($trgt_item == '')
 
 {
 
 $error = 'ERROR: Please fill in all required fields!';
 
-
-valid($id, $new_item, $error);
+valid($id,$trgt_item, $error);
 }
 
 else
 {
 
-mysqli_query($conn, "UPDATE item SET no_item='$new_item' WHERE item_id='$id'")
+  $ownn = 4 ; //status 4 = dissolved
+
+mysqli_query($conn, "UPDATE item SET own='".$ownn."' WHERE item_id='".$trgt_item."'")
 or die(mysqli_error($conn));
 
 
@@ -204,8 +186,8 @@ or die(mysqli_error($conn));
 $conn->close();
 
 echo "<script>
-             alert('Document successfully edited'); 
-             window.location.href = 'id.php';
+             alert('Document successfully Updated'); 
+             window.close();
      </script>";
 echo "welp";
 }
