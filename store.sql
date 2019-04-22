@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2019 at 06:09 AM
+-- Generation Time: Apr 22, 2019 at 06:41 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -30,7 +30,6 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `item` (
   `item_id` varchar(12) NOT NULL,
-  `refer_id` varchar(12) NOT NULL,
   `name` varchar(100) NOT NULL,
   `own` tinyint(2) NOT NULL,
   `date_in` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -49,10 +48,13 @@ CREATE TABLE `item` (
 --
 
 CREATE TABLE `item_log` (
-  `br_id` varchar(12) NOT NULL,
+  `cond` tinyint(2) NOT NULL,
   `item_id` varchar(12) NOT NULL,
-  `to_id` varchar(12) NOT NULL,
-  `org` varchar(100) NOT NULL,
+  `item_id2` varchar(12) NOT NULL,
+  `item_id3` varchar(12) NOT NULL,
+  `val` int(20) NOT NULL,
+  `val2` int(20) NOT NULL,
+  `val3` int(20) NOT NULL,
   `dat_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -67,6 +69,19 @@ CREATE TABLE `user` (
   `pw` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_log`
+--
+
+CREATE TABLE `user_log` (
+  `id` varchar(12) NOT NULL,
+  `user` varchar(12) NOT NULL,
+  `p` varchar(12) NOT NULL,
+  `time_log` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -75,14 +90,12 @@ CREATE TABLE `user` (
 -- Indexes for table `item`
 --
 ALTER TABLE `item`
-  ADD PRIMARY KEY (`item_id`),
-  ADD UNIQUE KEY `item_id` (`item_id`);
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Indexes for table `item_log`
 --
 ALTER TABLE `item_log`
-  ADD PRIMARY KEY (`br_id`),
   ADD KEY `FK_Br_Item` (`item_id`);
 
 --
@@ -90,16 +103,6 @@ ALTER TABLE `item_log`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user`);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `item_log`
---
-ALTER TABLE `item_log`
-  ADD CONSTRAINT `FK_Br_Item` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
