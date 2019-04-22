@@ -13,7 +13,7 @@ Available function
 
 Future developement
 
-1.Fixing minor error such as deleting item cant be item logged.
+1.Fixing minor error such as deleting item cant be item logged and more..
 2.Data analysis using Chart.js
 
 #Currently focused on mini project for e-commerce developement...
