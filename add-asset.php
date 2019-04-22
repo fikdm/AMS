@@ -23,6 +23,35 @@
     $("#navv").load("nav.php")
   });
 </script>
+<?php
+    require('conn.php');
+
+      $user = "user";
+      $p = 1;
+      $time = date("Y-m-d H:i:s"); //problem start here
+
+    $log = "INSERT INTO user_log (user, p, time_log) 
+                VALUES ('$user', '$p', '$time')";
+    mysqli_query($conn, $log)
+or die(mysqli_error($conn));
+
+            if ($conn->query($log) === TRUE) {
+               $flood_check ="SELECT * FROM user_log WHERE time_log > DATE_SUB(NOW(), INTERVAL 5 SECOND);";
+          
+          $check = mysqli_query($conn,$flood_check);
+           $rowz = mysqli_num_rows($check);
+                    if ($rowz == 0) {
+
+                    }
+                    else{
+                       echo "<script type= 'text/javascript'>alert('Slowdown...');</script>";
+                    }
+            }
+    
+                   else{
+                      
+                       }
+?>
 </head>
 <body>
 
@@ -96,10 +125,23 @@ $val = $_POST['val'];
                 VALUES ('$item_id', '$name', '$own','$date_in','$date_out','$desc_in','$desc_out','$no_item','$val')";
                 
            if ($conn->query($sql) === TRUE) {
-echo "<script type= 'text/javascript'>alert('New record created successfully');</script>";
-} else {
-echo "<script type= 'text/javascript'>alert('Error: " . $sql . "<br>" . $conn->error."');</script>";
-}
+              $cond = 1 ;
+              $nx = "nx";
+              $nn = 0;
+              $date = date("Y-m-d H:i:s");
+              $sql2 = "INSERT item_log (cond, item_id, item_id2, item_id3, val, val2, val3, dat_in) 
+                VALUES ('$cond', '$item_id', '$nx','$nx','$nn','$nn','$nn','$date')";
+              mysqli_query($conn, $sql2)
+              or die(mysqli_error($conn));
+              echo "<script>
+             alert('Asset successfully recorded'); 
+             window.close();
+     </script>";
+            }
+            else{
+
+              echo "Item log failed";
+            }
 //$x=9999;
                // mysqli_query($conn, "UPDATE item SET own='$own', no_item='$x' WHERE item_id='$item_id'")
 //or die(mysqli_error($conn));

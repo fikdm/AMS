@@ -127,10 +127,18 @@ $valx = mysqli_real_escape_string($conn, $_POST['val']);
                 VALUES ('$x', '$namex', '$ownx','$date_inx','$date_outx','$desc_inx','$desc_outx','$sub_item','$valx')";
                 
            if ($conn->query($sql) === TRUE) {
-echo "<script type= 'text/javascript'>alert('New record created successfully');</script>";
-} else {
-echo "<script type= 'text/javascript'>alert('Error: " . $sql . "<br>" . $conn->error."');</script>";
-}
+              $cond = 5 ;
+              $nx = "nx";
+              $date = date("Y-m-d H:i:s");
+              $sql2 = "INSERT item_log (cond, item_id, item_id2, item_id3, val, val2, val3, dat_in) 
+                VALUES ('$cond', '$id', '$x','$nx','$old_item','$sub_item','$new_item','$date')";
+              mysqli_query($conn, $sql2)
+              or die(mysqli_error($conn));
+            }
+            else{
+
+              echo "Item log failed";
+            }
 
 
 
@@ -155,8 +163,8 @@ or die(mysqli_error($conn));
 $conn->close();
 
 echo "<script>
-             alert('Document successfully edited'); 
-             window.location.href = 'id.php';
+             alert('Asset successfully splited'); 
+             window.close();
      </script>";
 echo "welp";
 }

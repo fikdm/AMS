@@ -20,13 +20,11 @@
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="id.php">ID</a></li>
-          <li><a href="name.php">Name</a></li>
-          <li><a href="date.php">Date</a></li>
         </ul>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
     </ul>
   </div>
 </nav>

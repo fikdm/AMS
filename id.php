@@ -66,7 +66,6 @@
           $count=1;
           $sel_query="SELECT * FROM item WHERE item_id ='$item_id'ORDER BY date_in DESC;";
           
-          
           $result = mysqli_query($conn,$sel_query);
           while($row = mysqli_fetch_assoc($result)) { ?>
           <tr>
@@ -82,17 +81,23 @@
            echo "Terminated";
           } {{?>
             
-
-
-
           </td>
         
-           <td align="center"> <a href="file.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Print Borang"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+           <td align="center"> 
+          <div class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/com.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/split.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/sta.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="edit.php?id=<?php echo $row["item_id"]; ?>"  target="_blank" title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></li>
 
-      <a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+        </ul>
+          </div>
 
-         <a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a>
-          <a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></td></tr>
+          </td></tr>
           <?php $count++; } }}} } ?>
           </tbody>
             

@@ -137,7 +137,7 @@ or die(mysqli_error($conn));
             }
             else{
 
-              echo "kebamboom!";
+              echo "Item log failed";
             }
 
 
@@ -186,7 +186,7 @@ or die(mysqli_error($conn));
 $conn->close();
 
 echo "<script>
-             alert('Document successfully Updated'); 
+             alert('Asset successfully Combined'); 
              window.close();
      </script>";
 echo "welp";

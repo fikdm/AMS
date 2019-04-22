@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/hover.css">
   <link rel="stylesheet" href="css/bs.css">
+  
   <script src="js/bs.js"></script>
   <link rel="stylesheet" type="text/css" href="css/jquery.css"/>
    <script type="text/javascript" charset="utf8" src="js/jquery.js"></script>
@@ -22,6 +23,35 @@
     $("#navv").load("nav.php")
   });
 </script>
+<?php
+    require('conn.php');
+
+      $user = "user";
+      $p = 2;
+      $time = date("Y-m-d H:i:s"); //problem start here
+
+    $log = "INSERT INTO user_log (user, p, time_log) 
+                VALUES ('$user', '$p', '$time')";
+    mysqli_query($conn, $log)
+or die(mysqli_error($conn));
+
+            if ($conn->query($log) === TRUE) {
+               $flood_check ="SELECT * FROM user_log WHERE time_log > DATE_SUB(NOW(), INTERVAL 5 SECOND);";
+          
+          $check = mysqli_query($conn,$flood_check);
+           $rowz = mysqli_num_rows($check);
+                    if ($rowz == 0) {
+
+                    }
+                    else{
+                       echo "<script type= 'text/javascript'>alert('Slowdown...');</script>";
+                    }
+            }
+    
+                   else{
+                      
+                       }
+?>
 </head>
 <body>
 
@@ -88,13 +118,21 @@
 
 
           </td>
-        <td align="center"> <a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
-        <a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+        <td align="center"> 
+          <div class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/com.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/split.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/sta.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="edit.php?id=<?php echo $row["item_id"]; ?>"  target="_blank" title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></li>
 
-      <a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+        </ul>
+          </div>
 
-         <a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a>
-          <a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></td></tr>
+          </td></tr>
           <?php $count++; } }} ?>
           </tbody>
   
@@ -157,13 +195,18 @@
 
 
           </td>
-        <td align="center"> <a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
-        <a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+        <td align="center"> <div class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></li>
 
-      <a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
-
-         <a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a>
-          <a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></td></tr>
+        </ul>
+          </div></td></tr>
           <?php $count++; } }} ?>
           </tbody>
   
@@ -226,13 +269,18 @@
 
 
           </td>
-        <td align="center"> <a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
-        <a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
+        <td align="center"> <div class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="com.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Combine Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="split.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Split Item"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a></li>
+          <li><a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></li>
 
-      <a href="status.php?id=<?php echo $row["item_id"]; ?>" target="_blank"  title="Change Item Status"><img border="0" align="top" src="image/print.png" width="28" height="28" style="padding:4px;"></a>
-
-         <a href="edit.php?id=<?php echo $row["item_id"]; ?>"  title="Edit Borang"><img border="0" align="top" src="image/edit.png" width="28" height="28" style="padding:4px;"></a>
-          <a href="delete.php?id=<?php echo $row["item_id"]; ?> " onclick="return confirm('Are you sure you want to delete this item?');"  title="Delete Borang"><img border="0" align="top" src="image/bin.png" width="28" height="28" style="padding:4px;"></a></td></tr>
+        </ul>
+          </div></td></tr>
           <?php $count++; } }} ?>
           </tbody>
   

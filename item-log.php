@@ -22,6 +22,35 @@
     $("#navv").load("nav.php")
   });
 </script>
+<?php
+    require('conn.php');
+
+      $user = "user";
+      $p = 3;
+      $time = date("Y-m-d H:i:s"); //problem start here
+
+    $log = "INSERT INTO user_log (user, p, time_log) 
+                VALUES ('$user', '$p', '$time')";
+    mysqli_query($conn, $log)
+or die(mysqli_error($conn));
+
+            if ($conn->query($log) === TRUE) {
+               $flood_check ="SELECT * FROM user_log WHERE time_log > DATE_SUB(NOW(), INTERVAL 5 SECOND);";
+          
+          $check = mysqli_query($conn,$flood_check);
+           $rowz = mysqli_num_rows($check);
+                    if ($rowz == 0) {
+
+                    }
+                    else{
+                       echo "<script type= 'text/javascript'>alert('Slowdown...');</script>";
+                    }
+            }
+    
+                   else{
+                      
+                       }
+?>
 </head>
 <body>
 
@@ -55,30 +84,44 @@
         <?php       
           require('conn.php');
           $count=1;
-          //$sel_query="Select * from office ORDER BY id desc;";
           $sel_query="SELECT * FROM item_log WHERE dat_in > DATE_SUB(NOW(), INTERVAL 1 DAY) 
           ORDER BY dat_in DESC;";
           $result = mysqli_query($conn,$sel_query);
           while($row = mysqli_fetch_assoc($result)) { ?>
            <tr>
           <td width="5%" align="center"><?php echo $count; ?></td>
-          <td align="center"><?php echo $row['dat_in']?></td>
-          <td align="center"><?php
+          <td width="15%"align="left"><?php echo $row['dat_in']?></td>
+          <td align="left"><?php
            switch ($row['cond']) {
              case 1:
-             echo "string";
+             echo "The user add item ";
+             echo $row['item_id'];
              break;
               case 2:
-              echo "a";
+              echo "The user edit item ";
+              echo $row['item_id'];
               break;
                case 3:
-               echo "b";
+               echo "The user delete item ";
+               echo $row['item_id'];
                break;
                 case 4:
-                echo "c";
+                echo "The user change item ";
+                echo $row['item_id'];
+                echo " status ";
                 break;
                  case 5:
-                 echo "d";
+                  echo "The user split item ";
+                  echo $row['item_id'];
+                  echo " with ";
+                  echo $row['val'];
+                  echo " pax into item ";
+                  echo $row['item_id2'];
+                  echo " with ";
+                  echo $row['val2'];
+                  echo " pax become ";
+                  echo $row['val3'];
+                  echo " pax";
                  break;
                   case 6:
                   echo "The user combine item ";
@@ -128,8 +171,8 @@
           while($row = mysqli_fetch_assoc($result)) { ?>
            <tr>
           <td width="5%" align="center"><?php echo $count; ?></td>
-          <td align="center"><?php echo $row['dat_in']?></td>
-          <td align="center"><?php
+          <td width="15%"align="left"><?php echo $row['dat_in']?></td>
+          <td align="left"><?php
            switch ($row['cond']) {
              case 1:
              echo "string";
@@ -194,8 +237,8 @@
           while($row = mysqli_fetch_assoc($result)) { ?>
            <tr>
           <td width="5%" align="center"><?php echo $count; ?></td>
-          <td align="center"><?php echo $row['dat_in']?></td>
-          <td align="center"><?php
+          <td width="15%"align="left"><?php echo $row['dat_in']?></td>
+          <td align="left"><?php
            switch ($row['cond']) {
              case 1:
              echo "string";
