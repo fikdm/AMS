@@ -13,10 +13,11 @@ Available function
 
 Future developement
 
-1.Fixing minor error such as deleting item cant be item logged and more..
+1.Fixing minor error such as deleting item cant be item logged and more
 2.Data analysis using Chart.js
+3.Add new function
 
 #Currently focused on 
 
 1. Interview preperation
-2. Studying laravel and codeigniter frameworks
+2. Studying laravel frameworks
